@@ -1,11 +1,13 @@
 package simulations
 
 import com.typesafe.config.ConfigFactory
+import db.Repository.checkDataRowsStatuses
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.protocol.HttpProtocolBuilder
-import scala.concurrent.duration._
 import simulations.GoogleScenario.mainScenario
+
+import scala.concurrent.duration._
 
 class ServiceSimulation extends Simulation {
 
@@ -38,5 +40,9 @@ class ServiceSimulation extends Simulation {
       global.responseTime.percentile4.lte(percentile99ResponseTime.toInt)
     )
 
+  after {
+    println("Simulation is finished!")
+    checkDataRowsStatuses()
+  }
 
 }
